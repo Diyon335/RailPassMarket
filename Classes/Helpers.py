@@ -1,8 +1,6 @@
 from enum import Enum
-
-
 # these are the enumeration types needed
-# rail pass type enum
+# rail pass type enum can be extended as needed
 class RailPassType(Enum):
     SINGLE = 1
     MULTI = 2

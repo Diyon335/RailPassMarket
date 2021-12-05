@@ -25,7 +25,7 @@ class RailPass(Component):
         self._sold = sold  # this ticket is sold or not  false or true
         self._issue_date = issue_date  # the date the ticket was bough on 
         self._sold_date = sold_date  # the date of selling and null if not sold
-        self._want_to_sell = want_to_sell #the user want to sell or not true or false
+        self._want_to_sell = want_to_sell #the user want to sell or not true or false flag
 
     def __str__(self):
         return 'Ticket is is = '+ str(self._ticket_id) +' , Number of rides is = '+ str(self._number_rides_left)\

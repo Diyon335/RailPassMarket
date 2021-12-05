@@ -1,7 +1,7 @@
 
 from Classes.RailPass import Component, RailPass
 
-#This class person can be a buyer or a seller in the system
+#This class person can be a buyer or a seller in the system and methods related ..
 class Person(Component):
     def __init__(self,name,description,person_id,last_name,first_name,email_address,password,telephone,bank_account):
         Component.__init__(self,name,description)
@@ -39,7 +39,5 @@ print(rail3)
 person.buy_ticket(rail2)
 person.buy_ticket(rail3)
 person.sell_ticket(rail1)
-
-
 print(person)
 
