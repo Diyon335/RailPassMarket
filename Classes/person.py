@@ -1,43 +1,83 @@
+"""
+Class for a Person
+"""
 
-from Classes.RailPass import Component, RailPass
 
-#This class person can be a buyer or a seller in the system and methods related ..
-class Person(Component):
-    def __init__(self,name,description,person_id,last_name,first_name,email_address,password,telephone,bank_account):
-        Component.__init__(self,name,description)
-        self._last_name=last_name
-        self._person_id=person_id  # it should be incremented by 1
-        self._first_name=first_name
-        self._email_address=email_address
-        self._password=password
-        self._telephone=telephone
-        self._bank_account = bank_account
-        self._tickets = [] #list of tickets owned by that personI had another though and for me no sense two maintain two lists
+class Person:
+
+    """
+    Constructor for the Person class
+    """
+
+    def __init__(self, first_name, last_name, email_address, password, telephone, bank_balance, person_id):
+        try:
+            self._last_name = last_name
+            self._person_id = int(person_id)  # it should be incremented by 1
+            self._first_name = first_name
+            self._email_address = email_address
+            self._password = password
+            self._telephone = telephone
+            self._bank_balance = int(bank_balance)
+            self._rail_passes = []  # list of rail passes owned by person
+
+        except TypeError as e:
+            print("Incorrect type entered")
+            print(e)
+
+    """
+    Returns a boolean indicating if the person can buy a rail pass or not
+    """
+
+    def can_buy(self, rail_pass):
+        return self._bank_balance >= rail_pass.get_cost()
+
+    """
+    Adds money to a person's bank account after selling a rail pass
+    """
+
+    def deposit_money(self, amount):
+        self._bank_balance += amount
+
+    """
+    Subtracts money from a person's account after buying a rail pass
+    """
+
+    def deduct_money(self, amount):
+        self._bank_balance -= amount
+
+    """
+    Sells a person's rail pass
+    """
+
+    def sell_rail_pass(self, rail_pass):
+        # we will return only items with ids that are not equal to the input ticket id
+        new_rail_passes = [rp for rp in self._rail_passes if rp.get_ticket_id() != rail_pass.get_ticket_id()]
+
+        if len(new_rail_passes) != 0:
+            self._rail_passes = list(new_rail_passes)  # deep copy of the list
+
+    """
+    Allows a person to buy a ticket if they have sufficient balance
+    """
+
+    def buy_rail_pass(self, rail_pass):
+        # push this ticket to the array
+        if self.can_buy(rail_pass):
+            self.deduct_money(rail_pass.get_cost())
+            self._rail_passes.append(rail_pass)
+
+        else:
+            print("You do not have enough money to buy this Rail Pass")
+
+    """
+    Gets the rail passes of the person
+    """
+    def get_rail_passes(self):
+        return self._rail_passes
+
+    """
+    The default toString method of the Person object
+    """
 
     def __str__(self):
-        return 'Name of the user = ' + self._last_name + ', list of tickets ids this user has now : '+ str([t.get_ticket_id() for t in self._tickets ])
-    
-    def sell_ticket(self, ticket): # pop this ticket out of the array
-        # we will return only items with ids that are not equal to the input ticket id 
-        new_tickes_list = [t for t in self._tickets if t.get_ticket_id() != ticket.get_ticket_id()]
-        if len(new_tickes_list) != 0:
-            self._tickets = list(new_tickes_list) #deep copy of the list
-
-    def buy_ticket(self,ticket) : #push this ticket to the array
-        self._tickets.append(ticket)
-    
-
-# this is just was for testing to be removed later
-person = Person('name','description',0,'Tom ','first_name','email_address@gmail.com','password',12345678,12345678)
-rail1 = RailPass('name','description',10,1,2,5,1,0 ,False ,'2021-07-04 18:38:09.710949' , '2021-12-04 18:38:09.710949',False)
-rail2 = RailPass('name','description',10,1,2,5,2,0 ,False ,'2021-07-04 18:38:09.710949' , '2021-12-04 18:38:09.710949', False)
-rail3 = RailPass('name','description',10,1,2,5,3,0 ,False ,'2021-07-04 18:38:09.710949' , '2021-12-04 18:38:09.710949' , False)
-person.buy_ticket(rail1)
-print(rail1)
-print(rail2)
-print(rail3)
-person.buy_ticket(rail2)
-person.buy_ticket(rail3)
-person.sell_ticket(rail1)
-print(person)
-
+        return f"{self._first_name}:{self._last_name}:{self._email_address}:{self._password}:{self._telephone}:{self._bank_balance}:{self._person_id}"
