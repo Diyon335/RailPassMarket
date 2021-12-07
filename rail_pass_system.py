@@ -1,5 +1,6 @@
 from Files import file_parser
 from uuid import uuid4
+from datetime import datetime,timedelta
 
 """
 Class for the rail pass trader system
@@ -43,6 +44,15 @@ class RailPassSystem:
 
     def get_rail_passes(self):
         return self._rail_passes
+
+    """
+    Returns all rail passes that have the required number of rides and are valid for the date of travel
+    """
+
+    def filter_rail_passes(self, travel_date, number_of_passengers):
+        return list(filter(lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta(days=365)
+                                             and number_of_passengers < rail_pass.get_rides_left(), self._rail_passes))
+
 
     """
     Closes the system and writes all data to the database

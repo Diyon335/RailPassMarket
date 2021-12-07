@@ -3,7 +3,7 @@ Class for the Rail Pass
 """
 
 from Classes.helpers import from_user_input_level
-
+from datetime import datetime
 
 class RailPass:
 
@@ -17,14 +17,14 @@ class RailPass:
             self._owner_id = int(owner_id)
             self._rail_pass_id = int(rail_pass_id)
 
-            if rides_left > 10 or rides_left < 1:
+            if int(rides_left) > 10 or int(rides_left) < 1:
                 raise ValueError
             else:
                 self._rides_left = int(rides_left)  # restriction here it must be less than 10 rides
 
-            self._rail_pass_level = from_user_input_level(rail_pass_level)  # vip or economic using enums
+            self._rail_pass_level = from_user_input_level(int(rail_pass_level))  # vip or economic using enums
             self._price = int(price)  # to be decided later how to implement that
-            self._issue_date = issue_date  # the date the ticket was bough on
+            self._issue_date = datetime.strptime(issue_date, '%d/%m/%Y')  # the date the ticket was bough on
 
         except ValueError as e:
             print("Incorrect value entered")
@@ -47,9 +47,25 @@ class RailPass:
         return self._price
 
     """
+    Returns the issue date of the rail pass
+    """
+
+    def get_issue_date(self):
+        return self._issue_date
+
+    """
+    Returns the number of rides left on the rail pass
+    """
+
+    def get_rides_left(self):
+        return self._rides_left
+
+    """
     Default toString method of the class
     """
 
     def __str__(self):
-        return f"{self._price}:{self._rail_pass_level}:{self._rides_left}:{self._rail_pass_id}:{self._owner_id}:{self._issue_date}"
+        return f"€{self._price}:{self._rail_pass_level}:{self._rides_left}:{self._rail_pass_id}:{self._owner_id}:{self._issue_date}"
+
+    __repr__ = __str__
 
