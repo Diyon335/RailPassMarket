@@ -8,6 +8,7 @@ authors: Dirk Peeters, Rasha Ali, George Paul, Diyon Wickrameratne
 from Classes.person import Person
 from rail_pass_system import RailPassSystem
 from Classes.helpers import invalid_string, valid_email
+from datetime import datetime
 
 """
 Main method that runs the program
@@ -25,8 +26,8 @@ def main():
 
         # TODO Implement log in. Check against the list of clients in the system. Check if they exist, and if pass is correct
         if "login" in prompt:
-            pass
-
+            # Assume login successful
+            s.run()
         # We can change these if statements
         elif "sign up" in prompt:
 
