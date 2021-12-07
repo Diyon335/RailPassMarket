@@ -70,8 +70,40 @@ class RailPassSystem:
         # Once called, the user has various options while this loop is running - such as uploading a ticket for sale, etc
         # TODO Implement various prompts (sell tickets, search and buy for tickets)
         while True:
-            # Temporary break - just for testing
-            break
+            prompt = input("Would you like to buy or sell a rail pass?")
+
+            if "sell" in prompt:
+                pass  # Not implemented yet
+            elif "buy" in prompt:
+
+                case = 0
+                travel_date = ""
+                number_of_passengers = ""
+
+                while True:
+
+                    try:
+                        if case == 0:
+
+                            travel_date = input("Please enter your desired date of travel (dd/mm/yyyy):")
+                            travel_date = datetime.strptime(travel_date, '%d/%m/%Y')
+                            if travel_date < datetime.today():
+                                print("Date cannot be in the past")
+                                continue
+
+                            case = 1
+
+                        if case == 1:
+                            number_of_passengers = int(input("Please enter the number of passengers:"))
+                            break
+
+                    except (ValueError, TypeError):
+                        print("Please check your entered data and try again!")
+                        continue
+
+                print(*self.filter_rail_passes(travel_date, number_of_passengers), sep="\n")
+
+                break
 
         self.close()
 
