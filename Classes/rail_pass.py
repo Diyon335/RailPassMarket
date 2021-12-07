@@ -65,7 +65,7 @@ class RailPass:
     """
 
     def __str__(self):
-        return f"€{self._price}:{self._rail_pass_level}:{self._rides_left}:{self._rail_pass_id}:{self._owner_id}:{self._issue_date}"
+        return f"{self._price}:{self._rail_pass_level}:{self._rides_left}:{self._rail_pass_id}:{self._owner_id}:{self._issue_date.strftime('%d/%m/%Y')}"
 
     __repr__ = __str__
 
