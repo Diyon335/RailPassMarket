@@ -1,38 +1,50 @@
 from Classes.person import Person
 from Classes.rail_pass import RailPass
-from Classes.helpers import enum_to_level
+import json
 
 clients = "Databases/client_database.txt"
 rail_passes = "Databases/ticket_database.txt"
 
 """
-Parses each line from the database of clients
+Parses each line from the database of clients, and gets all rail passes
 """
 
 
-def parse_clients():
+def parse_clients_and_passes():
+
     people = []
-    with open(clients, "r") as file:
-        for line in file:
-            string = line.strip().split(":")
-            people.append(Person(string[0], string[1], string[2], string[3], string[4], string[5], string[6]))
+    all_rail_passes = []
 
-    return people
+    try:
+        with open(clients, "r") as file:
+            # Load the dictionary
+            people_dict = json.loads(file.read())
 
+    # In the case of an empty file
+    except json.JSONDecodeError:
+        print("Returned this shit")
+        return people, all_rail_passes
 
-"""
-Parses each line from the database of rail passes
-"""
+    for person in people_dict:
+        # Split the key aka Person to create a person object
+        string = person.strip().split(":")
 
+        # Add person to system
+        p = Person(string[0], string[1], string[2], string[3], string[4], string[5], string[6])
+        people.append(p)
 
-def parse_rail_passes():
-    passes = []
-    with open(rail_passes, "r") as file:
-        for line in file:
-            string = line.strip().split(":")
-            passes.append(RailPass(string[0], enum_to_level(string[1]), string[2], string[3], string[4], string[5]))
+        # Add their list of rail passes to their object (the value of the dict.)
+        p.load_rail_passes(people_dict[person])
 
-    return passes
+        rps = []
+        for rp in people_dict[person]:
+            string = rp.split(":")
+            rps.append(RailPass(string[0], string[1], string[2], string[3], string[4], string[5]))
+
+        # Add their share of rail passes to all the tickets in the system
+        all_rail_passes.extend(rps)
+
+    return people, all_rail_passes
 
 
 """
@@ -41,12 +53,17 @@ Writes clients from the system to the database
 
 
 def write_clients(people):
-    data = ""
+    data = {}
     for client in people:
-        data += str(client)+"\n"
+
+        rps = []
+        for rp in client.get_rail_passes():
+            rps.append(str(rp))
+
+        data[str(client)] = rps
 
     with open(clients, "w") as file:
-        file.write(data)
+        file.write(json.dumps(data))
 
 
 """

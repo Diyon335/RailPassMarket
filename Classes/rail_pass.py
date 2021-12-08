@@ -1,8 +1,6 @@
 """
 Class for the Rail Pass
 """
-
-from Classes.helpers import from_user_input_level
 from datetime import datetime
 
 class RailPass:
@@ -22,7 +20,7 @@ class RailPass:
             else:
                 self._rides_left = int(rides_left)  # restriction here it must be less than 10 rides
 
-            self._rail_pass_level = from_user_input_level(int(rail_pass_level))  # vip or economic using enums
+            self._rail_pass_level = rail_pass_level  # vip or economic using enums
             self._price = int(price)  # to be decided later how to implement that
             self._issue_date = datetime.strptime(issue_date, '%d/%m/%Y')  # the date the ticket was bough on
 
@@ -32,6 +30,12 @@ class RailPass:
         except TypeError as e:
             print("Incorrect type entered")
             print(e)
+
+    """
+    Gets the owner's ID
+    """
+    def get_owner_id(self):
+        return self._owner_id
 
     """
     Returns the ID of the rail pass

@@ -1,3 +1,4 @@
+from Classes.rail_pass import RailPass
 """
 Class for a Person
 """
@@ -23,6 +24,30 @@ class Person:
         except TypeError as e:
             print("Incorrect type entered")
             print(e)
+
+    """
+    Gets the email of the person
+    """
+    def get_email(self):
+        return self._email_address
+
+    """
+    Gets the password of the person
+    """
+    def get_password(self):
+        return self._password
+
+    """
+    Gets first name of client
+    """
+    def get_first_name(self):
+        return self._first_name
+
+    """
+    Adds a single rail pass for the person
+    """
+    def add_rail_pass(self, rail_pass):
+        self._rail_passes.append(rail_pass)
 
     """
     Returns a boolean indicating if the person can buy a rail pass or not
@@ -74,6 +99,14 @@ class Person:
     """
     def get_rail_passes(self):
         return self._rail_passes
+
+    """
+    Loads all of the person's rail passes from the database
+    """
+    def load_rail_passes(self, rail_pass_list):
+        for rp in rail_pass_list:
+            string = rp.split(":")
+            self._rail_passes.append(RailPass(string[0], string[1], string[2], string[3], string[4], string[5]))
 
     """
     The default toString method of the Person object
