@@ -4,11 +4,9 @@ RAIL PASS TRADER
 authors: Dirk Peeters, Rasha Ali, George Paul, Diyon Wickrameratne
 
 """
-
 from Classes.person import Person
 from rail_pass_system import RailPassSystem
 from Classes.helpers import invalid_string, valid_email
-from datetime import datetime
 
 """
 Main method that runs the program
@@ -24,11 +22,24 @@ def main():
 
         prompt = input("Welcome! Would you like to login or sign up?")
 
-        # TODO Implement log in. Check against the list of clients in the system. Check if they exist, and if pass is correct
+        # We can change these if statements with more concrete commands/aliases
         if "login" in prompt:
-            # Assume login successful
+
+            email = input("Please enter your email: ")
+            password = input("Please enter your password: ")
+
+            # TODO Suggestion for making it restart from prompt??
+            if not s.client_exists(email, password):
+                print("Incorrect login details. Please check your entered details and try again!")
+                s.close()
+                quit()
+
+            user = s.get_client(email, password)
+            print("Welcome "+user.get_first_name()+"!")
+            s.set_current_user(user)
+
             s.run()
-        # We can change these if statements
+
         elif "sign up" in prompt:
 
             # Continuous prompt to help the user sign up
@@ -63,6 +74,11 @@ def main():
 
                         if not valid_email(email):
                             raise ValueError
+
+                        # TODO Suggestion for making it restart from login???
+                        if s.client_exists(email):
+                            print("You already have an account. Please restart and login!")
+                            quit()
 
                         case = 3
                         continue
@@ -99,7 +115,9 @@ def main():
                     continue
 
             print(f"Welcome {first_name}!")
-            s.add_client(Person(first_name, last_name, email, password, telephone, balance, s.generate_id()))
+            p = Person(first_name, last_name, email, password, telephone, balance, s.generate_id())
+            s.add_client(p)
+            s.set_current_user(p)
 
             s.run()
 

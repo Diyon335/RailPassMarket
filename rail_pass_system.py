@@ -14,8 +14,24 @@ class RailPassSystem:
     """
 
     def __init__(self):
-        self._clients = file_parser.parse_clients()
-        self._rail_passes = file_parser.parse_rail_passes()
+        self._clients = file_parser.parse_clients_and_passes()[0]
+        self._rail_passes = file_parser.parse_clients_and_passes()[1]
+
+        self._client = None
+
+    """
+    Sets the current user of the system
+    """
+
+    def set_current_user(self, client):
+        self._client = client
+
+    """
+    Gets the current user of the system
+    """
+
+    def get_current_user(self):
+        return self._client
 
     """
     Adds a client to the list of clients
@@ -53,6 +69,31 @@ class RailPassSystem:
         return list(filter(lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta(days=365)
                                              and number_of_passengers < rail_pass.get_rides_left(), self._rail_passes))
 
+    """
+    Returns a boolean, indicating if the client exists in the database
+    """
+
+    def client_exists(self, email, password=None):
+
+        for client in self._clients:
+
+            if password is None:
+                if client.get_email().lower() == email.lower():
+                    return True
+
+            else:
+                if client.get_email().lower() == email.lower() and client.get_password() == password:
+                    return True
+
+        return False
+
+    """
+    Gets the client object based on email and password
+    """
+
+    def get_client(self, email, password):
+        # Assumes client exists. Returns the first element (desired client) of a one-element list
+        return list(filter(lambda client: client.get_email().lower() == email.lower() and password == client.get_password(), self._clients))[0]
 
     """
     Closes the system and writes all data to the database
@@ -101,7 +142,11 @@ class RailPassSystem:
                         print("Please check your entered data and try again!")
                         continue
 
-                print(*self.filter_rail_passes(travel_date, number_of_passengers), sep="\n")
+                if len(self._rail_passes) < 1:
+                    print("No Rail Passes left!")
+
+                else:
+                    print(*self.filter_rail_passes(travel_date, number_of_passengers), sep="\n")
 
                 break
 
