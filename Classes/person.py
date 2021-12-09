@@ -25,6 +25,13 @@ class Person:
             print("Incorrect type entered")
             print(e)
 
+
+    """
+    Gets person id 
+    """
+    def get_person_id(self):
+        return self._person_id
+
     """
     Gets the email of the person
     """
@@ -76,10 +83,8 @@ class Person:
 
     def sell_rail_pass(self, rail_pass):
         # we will return only items with ids that are not equal to the input ticket id
-        new_rail_passes = [rp for rp in self._rail_passes if rp.get_ticket_id() != rail_pass.get_ticket_id()]
-
-        if len(new_rail_passes) != 0:
-            self._rail_passes = list(new_rail_passes)  # deep copy of the list
+        new_rail_passes = [rp for rp in self._rail_passes if rp.get_id() != rail_pass.get_id()]
+        self._rail_passes = list(new_rail_passes)  # deep copy of the list
 
     """
     Allows a person to buy a ticket if they have sufficient balance
@@ -90,7 +95,6 @@ class Person:
         if self.can_buy(rail_pass):
             self.deduct_money(rail_pass.get_cost())
             self._rail_passes.append(rail_pass)
-
         else:
             print("You do not have enough money to buy this Rail Pass")
 
