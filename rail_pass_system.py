@@ -66,9 +66,7 @@ class RailPassSystem:
 
     def filter_rail_passes(self, travel_date, number_of_passengers):
         return list(filter(
-            lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta(
-                days=365)
-                              and number_of_passengers < rail_pass.get_rides_left(), self._rail_passes))
+            lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta( days=365) and number_of_passengers < rail_pass.get_rides_left() and self.get_current_user().get_person_id() != rail_pass.get_owner_id(), self._rail_passes))
 
     """
     Returns a boolean, indicating if the client exists in the database
