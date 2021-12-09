@@ -57,6 +57,15 @@ class Person:
         self._rail_passes.append(rail_pass)
 
     """
+    Adds a single rail pass for the person
+    """
+
+    def delete_rail_pass(self, rail_pass_id):
+
+        new_rail_passes = [rp for rp in self._rail_passes if rp.get_id() != rail_pass_id]
+        self._rail_passes = list(new_rail_passes)  # deep copy of the list
+
+    """
     Returns a boolean indicating if the person can buy a rail pass or not
     """
 

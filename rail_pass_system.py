@@ -66,7 +66,7 @@ class RailPassSystem:
 
     def filter_rail_passes(self, travel_date, number_of_passengers):
         return list(filter(
-            lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta( days=365) and number_of_passengers < rail_pass.get_rides_left() and self.get_current_user().get_person_id() != rail_pass.get_owner_id(), self._rail_passes))
+            lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta( days=365) and number_of_passengers <= rail_pass.get_rides_left() and self.get_current_user().get_person_id() != rail_pass.get_owner_id(), self._rail_passes))
 
     """
     Returns a boolean, indicating if the client exists in the database
@@ -112,7 +112,7 @@ class RailPassSystem:
         # Once called, the user has various options while this loop is running - such as uploading a ticket for sale, etc
         # TODO Implement various prompts (sell tickets, search and buy for tickets)
         while True:
-            prompt = input("Would you like to buy or sell a rail pass?")
+            prompt = input("\nSelect an option:\nBuy\nSell\nView my tickets\nUpload a new ticket\nDelete a ticket\nLogout")
 
             if "sell" in prompt:
                 pass  # Not implemented yet
@@ -136,7 +136,7 @@ class RailPassSystem:
                             case = 1
 
                         if case == 1:
-                            number_of_passengers = int(input("Please enter the number of passengers:"))
+                            number_of_passengers = int(input("Please enter the number of required rides:"))
                             if len(self._rail_passes) < 1:
                                 print("No Rail Passes left!")
 
@@ -171,6 +171,7 @@ class RailPassSystem:
                                             filter(lambda owner_obj: owner_obj.get_person_id() == rp_to_check.get_owner_id(),
                                                    self.get_clients()))[0]
                                         owner.sell_rail_pass(rp_to_check)
+                                        rp_to_check.set_owner_id(self.get_current_user().get_person_id()) #Updating user_id on ticket record
                                         print("The ticket is added to your account successfully.")
                                         break
                                     else:
@@ -183,9 +184,32 @@ class RailPassSystem:
                     except (ValueError, TypeError):
                         print("Please check your entered data and try again!")
                         continue
+                continue
+
+            elif "view" in prompt:
+                print("Your rail passes:")
+                print(self._client.get_rail_passes())
+
+            elif "delete" in prompt:
+
+                print("Your rail passes:")
+                print(self._client.get_rail_passes())
+
+                try:
+                    id_to_delete = int(input("Please enter the rail pass id you want to delete:"))
+                    self._client.delete_rail_pass(id_to_delete)
+                    print(f"Rail pass with id {id_to_delete} has been deleted")
+
+                except (ValueError, TypeError):
+                    print("Please check your entered data and try again!")
+                continue
+
+            elif "logout" in prompt:
+                self.close()
                 break
 
-        self.close()
+
+
 
     """
     Generates a random UUID
