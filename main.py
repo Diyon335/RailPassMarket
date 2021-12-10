@@ -6,7 +6,7 @@ authors: Dirk Peeters, Rasha Ali, George Paul, Diyon Wickrameratne
 """
 from Classes.person import Person
 from rail_pass_system import RailPassSystem
-from Classes.helpers import invalid_string, valid_email
+from Classes.helpers import is_valid_string, is_valid_email
 
 """
 Main method that runs the program
@@ -54,7 +54,7 @@ def main():
                     if case == 0:
                         first_name = str(input("Please enter your first name: "))
 
-                        if invalid_string(first_name):
+                        if not is_valid_string(first_name):
                             raise ValueError
 
                         case = 1
@@ -63,7 +63,7 @@ def main():
                     if case == 1:
                         last_name = str(input("Please enter your last name: "))
 
-                        if invalid_string(last_name):
+                        if not is_valid_string(last_name):
                             raise ValueError
 
                         case = 2
@@ -72,7 +72,7 @@ def main():
                     if case == 2:
                         email = str(input("Please enter your email: "))
 
-                        if not valid_email(email):
+                        if not is_valid_email(email):
                             raise ValueError
 
                         # TODO Suggestion for making it restart from login???
