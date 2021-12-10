@@ -57,7 +57,7 @@ class Person:
         self._rail_passes.append(rail_pass)
 
     """
-    Adds a single rail pass for the person
+    Deletes a single rail pass for the person
     """
 
     def delete_rail_pass(self, rail_pass_id):
