@@ -66,7 +66,9 @@ class RailPassSystem:
 
     def filter_rail_passes(self, travel_date, number_of_passengers):
         return list(filter(
-            lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta( days=365) and number_of_passengers <= rail_pass.get_rides_left() and self.get_current_user().get_person_id() != rail_pass.get_owner_id(), self._rail_passes))
+            lambda rail_pass: rail_pass.get_issue_date() < travel_date < rail_pass.get_issue_date() + timedelta(
+                days=365) and number_of_passengers <= rail_pass.get_rides_left() and self.get_current_user().get_person_id() != rail_pass.get_owner_id(),
+            self._rail_passes))
 
     """
     Returns a boolean, indicating if the client exists in the database
@@ -112,7 +114,8 @@ class RailPassSystem:
         # Once called, the user has various options while this loop is running - such as uploading a ticket for sale, etc
         # TODO Implement various prompts (sell tickets, search and buy for tickets)
         while True:
-            prompt = input("\nSelect an option:\nBuy\nSell\nView my tickets\nUpload a new ticket\nDelete a ticket\nLogout")
+            prompt = input(
+                "\nSelect an option:\nBuy\nSell\nView my tickets\nUpload a new ticket\nDelete a ticket\nLogout")
 
             if "sell" in prompt:
                 pass  # Not implemented yet
@@ -139,9 +142,14 @@ class RailPassSystem:
                             number_of_passengers = int(input("Please enter the number of required rides:"))
                             if len(self._rail_passes) < 1:
                                 print("No Rail Passes left!")
-
                             else:
-                                print(*self.filter_rail_passes(travel_date, number_of_passengers), sep="\n")
+                                rail_passes_found = self.filter_rail_passes(travel_date, number_of_passengers)
+                                if len(rail_passes_found) >= 1:
+                                    print(*rail_passes_found, sep="\n")
+                                else:
+                                    print("No Rail Passes found as per your conditions.")
+                                    case = 0
+                                    continue
 
                             case = 2  # now next step is to buy a certain ticket from the displayed ones
                             continue
@@ -164,16 +172,19 @@ class RailPassSystem:
                                     rp_to_check = rail_pass_to_add[0]
                                     if self.get_current_user().can_buy(rp_to_check):
                                         # ticket is appended and money deducted
-                                        self.get_current_user().buy_rail_pass( rp_to_check)
+                                        self.get_current_user().buy_rail_pass(rp_to_check)
                                         # ticket need to be popped from the seller
                                         # get the owner object and pop the ticket out
                                         owner = list(
-                                            filter(lambda owner_obj: owner_obj.get_person_id() == rp_to_check.get_owner_id(),
+                                            filter(lambda
+                                                       owner_obj: owner_obj.get_person_id() == rp_to_check.get_owner_id(),
                                                    self.get_clients()))[0]
                                         owner.sell_rail_pass(rp_to_check)
-                                        rp_to_check.set_owner_id(self.get_current_user().get_person_id()) #Updating user_id on ticket record
+                                        rp_to_check.set_owner_id(
+                                            self.get_current_user().get_person_id())  # Updating user_id on ticket record
                                         print("The ticket is added to your account successfully.")
                                         break
+
                                     else:
                                         print("You don't have enough balance in your account.")
                                         break
@@ -198,6 +209,9 @@ class RailPassSystem:
                 try:
                     id_to_delete = int(input("Please enter the rail pass id you want to delete:"))
                     self._client.delete_rail_pass(id_to_delete)
+                    # Delete also these rail passes from the main list of tickets #db
+                    new_rail_passes = [rp for rp in self._rail_passes if rp.get_id() != id_to_delete]
+                    self._rail_passes = list(new_rail_passes)
                     print(f"Rail pass with id {id_to_delete} has been deleted")
 
                 except (ValueError, TypeError):
@@ -207,9 +221,6 @@ class RailPassSystem:
             elif "logout" in prompt:
                 self.close()
                 break
-
-
-
 
     """
     Generates a random UUID
