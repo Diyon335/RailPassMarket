@@ -22,7 +22,7 @@ class RailPass:
 
             self._rail_pass_level = rail_pass_level  # vip or economic using enums
             self._price = int(price)  # to be decided later how to implement that
-            self._issue_date = datetime.strptime(issue_date, '%d/%m/%Y')  # the date the ticket was bough on
+            self._issue_date = datetime.strptime(issue_date, '%d/%m/%Y')  # the date the ticket was bought on
 
         except ValueError as e:
             print("Incorrect value entered")
@@ -36,6 +36,13 @@ class RailPass:
     """
     def get_owner_id(self):
         return self._owner_id
+
+    """
+    Sets the owner's ID
+    """
+
+    def set_owner_id(self, owner_id):
+        self._owner_id = owner_id
 
     """
     Returns the ID of the rail pass
