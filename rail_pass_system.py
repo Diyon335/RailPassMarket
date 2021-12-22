@@ -1,6 +1,9 @@
 from Files import file_parser
 from uuid import uuid4
 from datetime import datetime, timedelta
+from Classes.rail_pass import RailPass
+from Classes.person import Person
+
 
 """
 Class for the rail pass trader system
@@ -115,7 +118,7 @@ class RailPassSystem:
         # TODO Implement various prompts (sell tickets, search and buy for tickets)
         while True:
             prompt = input(
-                "\nSelect an option:\nBuy\nSell\nView my tickets\nUpload a new ticket\nDelete a ticket\nLogout")
+                "\nSelect an option:\nBuy\nSell\nView my tickets\nRegister a railpass\nDelete a ticket\nLogout\n --> ")
 
             if "sell" in prompt:
                 pass  # Not implemented yet
@@ -200,6 +203,71 @@ class RailPassSystem:
             elif "view" in prompt:
                 print("Your rail passes:")
                 print(self._client.get_rail_passes())
+
+            elif "register" in prompt.lower():
+
+                case = 0
+                price = 100
+                rail_pass_level = ""
+                rides_left = ""
+                rail_pass_id = ""
+                owner_id = ""
+                issue_date = ""
+
+                while True:
+
+                    try:
+                        if case == 0:
+
+                            rail_pass_id = input("Please enter the ID of your railpass. (12 digit number; top right corner): ")
+                            if len(rail_pass_id) != 12:
+                                print("You did not enter a 12 digit number, try again.")
+                                continue
+
+                            case = 1
+
+                        if case == 1:
+                            rail_pass_level = int(input("What level is your railpass?\nVIP (enter 1)\nRegular (enter 2)\n --> "))
+                            if rail_pass_level != 1 and rail_pass_level != 2:
+                                print("You must enter 1 or 2")
+                                continue
+
+                            case = 2
+
+                        if case == 2:
+                            issue_date = input("What date (dd/mm/yyyy) was the railpass issued?\n --> ")
+                            issue_date = datetime.strptime(issue_date, '%d/%m/%Y')
+                            if issue_date > datetime.today():
+                                print("The issue date you entered is in the future, please reconsider.")
+                            elif issue_date < datetime.today() + timedelta(days=-365):
+                                print("Your railpass has expired and can not be registered.")
+                                continue
+                            elif  issue_date < datetime.today() + timedelta(days=-345):
+                                print("Your railpass has less than 20 days remaining and can not be registered.")
+                                continue
+
+                            case = 3
+
+                        if case == 3:
+                            rides_left = int(input("How many valid rides are left on the railpass?\n --> "))
+                            if rides_left < 1 or rides_left > 10:
+                                print("The number of valid rides left can range from 1 till 10.")
+                                continue
+
+                            break
+
+                    # When an error is caught, it continues the while statement until the last case
+                    except (ValueError, TypeError):
+                        print("Please check your entered data and try again!")
+                        continue
+
+                print(f"Your railpass with id {rail_pass_id} is registered!")
+                user = self.get_current_user()
+                owner_id = user.get_person_id()
+                rp = RailPass(price, rail_pass_level, rides_left, rail_pass_id, owner_id, issue_date)
+                self.add_rail_pass(rp)
+                user.add_rail_pass(rp)
+                continue
 
             elif "delete" in prompt:
 

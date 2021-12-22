@@ -6,7 +6,7 @@ authors: Dirk Peeters, Rasha Ali, George Paul, Diyon Wickrameratne
 """
 from Classes.person import Person
 from rail_pass_system import RailPassSystem
-from Classes.helpers import invalid_string, valid_email
+from Classes.Helpers import invalid_string, valid_email
 
 """
 Main method that runs the program
@@ -21,7 +21,7 @@ def main():
 
             s = RailPassSystem()
 
-            prompt = input("Welcome! Would you like to login or sign up?")
+            prompt = input("Welcome! Would you like to login or sign up?\n --> ")
 
             # We can change these if statements with more concrete commands/aliases
             if "login" in prompt:
