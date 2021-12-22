@@ -73,4 +73,4 @@ Here you are the link
 Project is still in progress  .
 
 ## Contact
-Contact reposiroty contributors for more details.
+Contact repository contributors for more details.
