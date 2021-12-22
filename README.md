@@ -51,7 +51,7 @@ Clone this repository and start using it with your visual-studio editor pr
 
 ## Use Case Diagram
 
- Here you are the use case of the project for the two releases v1, V2 .
+ Here you are the use case of the project :
 
 ![usecase](https://github.com/Diyon335/RailPassMarket/blob/main/RailPassUseCase.PNG)
 
