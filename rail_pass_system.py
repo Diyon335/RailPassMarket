@@ -236,13 +236,14 @@ class RailPassSystem:
 
                         if case == 2:
                             issue_date = input("What date (dd/mm/yyyy) was the railpass issued?\n --> ")
-                            issue_date = datetime.strptime(issue_date, '%d/%m/%Y')
-                            if issue_date > datetime.today():
+                            issue_date_to_check = datetime.strptime(issue_date, '%d/%m/%Y')
+                            if issue_date_to_check > datetime.today():
                                 print("The issue date you entered is in the future, please reconsider.")
-                            elif issue_date < datetime.today() + timedelta(days=-365):
+                                continue
+                            elif issue_date_to_check < datetime.today() + timedelta(days=-365):
                                 print("Your railpass has expired and can not be registered.")
                                 continue
-                            elif  issue_date < datetime.today() + timedelta(days=-345):
+                            elif  issue_date_to_check < datetime.today() + timedelta(days=-345):
                                 print("Your railpass has less than 20 days remaining and can not be registered.")
                                 continue
 
