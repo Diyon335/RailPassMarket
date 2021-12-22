@@ -26,6 +26,7 @@ we are aiming for with this project.
 ● We want to help people that realise they will not use up all their rides by allowing
 them to recover some of the money spent on the Rail Pass rather than letting it
 expire. 
+\
 ● We want to help people that plan a day trip but are not interested in a Multi Pass,
 because they rarely take the train and it makes no sense for them to buy a Multi
 Pass, but they still want to travel cheaply. We’ll call them “buyers”.
