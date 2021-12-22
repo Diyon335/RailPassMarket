@@ -56,7 +56,7 @@ Clone this repository and start using it with your visual-studio editor or PyCha
 
 ## Screen Capture of Project
 
-![Screenshot](https://github.com/Diyon335/RailPassMarket/blob/main/RPScreenShot.PNG)
+![Screenshot](https://github.com/Diyon335/RailPassMarket/blob/main/RPScreenShot1.PNG)
 
 
 ## Demo of Project
