@@ -47,7 +47,7 @@ of not finding a buyer for the remaining rides.
 
 ## Setup
 
-Clone this repository and start using it with your visual-studio editor pr 
+Clone this repository and start using it with your visual-studio editor or PyCharm editor . 
 
 ## Use Case Diagram
 
