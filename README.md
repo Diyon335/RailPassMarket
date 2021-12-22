@@ -17,12 +17,15 @@
 In Belgium NMBS/SNCB is responsible for public transport by train. One of the ways for
 travellers to pay for trips is by buying a Standard Multi (AKA Rail Pass). (snippet from
 website )
+\
 As the website says it”s money-saving, but only if you use all 10 rides. The Rail Pass expires
 after one year, and a lot of times railpasses expire with still several rides on them. This is a
 pity, especially since the railpass is transferable.
 But who to transfer it to?
+\
 Nothing has been set-up to organise the selling-on of Railpasses, and that is exactly what
 we are aiming for with this project.
+\
 ● We want to help people that realise they will not use up all their rides by allowing
 them to recover some of the money spent on the Rail Pass rather than letting it
 expire. 
