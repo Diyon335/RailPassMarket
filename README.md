@@ -49,16 +49,16 @@ Clone this repository and start using it with your visual-studio editor pr
 
  Here you are the use case of the project for the two releases v1, V2 .
 
-![usecase](https://github.com/Rashaali84/Eye-See-You/blob/master/Use-Case%20EYESEEYOU.jpg)
+![usecase]https://github.com/Diyon335/RailPassMarket/blob/main/RailPassUseCase.PNG)
 
 ## Screen Capture of Project
 
-![Screenshot](https://github.com/Rashaali84/Eye-See-You/blob/master/eye%20see%20you.png)
+![Screenshot](https://github.com/Diyon335/RailPassMarket/blob/main/RPScreenShot.PNG)
 
 
 ## Demo of Project
 A quick video for buy functinalty as a sample for one of the user story testing case .
-![Video-Demo](https://github.com/Rashaali84/Eye-See-You/blob/master/WebSite%20Demo.mp4)
+![Video-Demo](https://github.com/Diyon335/RailPassMarket/blob/main/RPVideo.MP4)
 
 ## Project Status
 We created a project board for all user stories needed for this project  .
