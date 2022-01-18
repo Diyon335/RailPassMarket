@@ -130,7 +130,7 @@ class RailPassSystem:
 
                 while True:
 
-                   # try:
+                   try:
                         if case == 0:
 
                             travel_date = input("Please enter your desired date of travel (dd/mm/yyyy):")
@@ -195,9 +195,9 @@ class RailPassSystem:
                                     print("This ticket is not found in our database.")
                                     break
 
-                   # except (ValueError, TypeError):
-                   #     print("Please check your entered data and try again!")
-                   #     continue
+                   except (ValueError, TypeError):
+                        print("Please check your entered data and try again!")
+                        continue
                 continue
 
             elif "railpasses" in prompt:
