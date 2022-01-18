@@ -22,7 +22,6 @@ def parse_clients_and_passes():
 
     # In the case of an empty file
     except json.JSONDecodeError:
-        print("Returned this shit")
         return people, all_rail_passes
 
     for person in people_dict:
@@ -39,7 +38,7 @@ def parse_clients_and_passes():
         rps = []
         for rp in people_dict[person]:
             string = rp.split(":")
-            rps.append(RailPass(string[0], string[1], string[2], string[3], string[4], string[5]))
+            rps.append(RailPass(string[1], string[2], string[3], string[4], string[5]))
 
         # Add their share of rail passes to all the tickets in the system
         all_rail_passes.extend(rps)
