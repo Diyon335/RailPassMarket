@@ -13,7 +13,7 @@ class Person:
     def __init__(self, first_name, last_name, email_address, password, telephone, bank_balance, person_id):
         try:
             self._last_name = last_name
-            self._person_id = int(person_id)  # it should be incremented by 1
+            self._person_id = int(person_id)
             self._first_name = first_name
             self._email_address = email_address
             self._password = password

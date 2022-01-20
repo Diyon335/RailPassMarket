@@ -19,10 +19,9 @@ def main():
 
         s = RailPassSystem()
 
-        prompt = input("Welcome! Would you like to login or sign up?\n --> ")
+        prompt = input("Welcome! Would you like to login or sign up? Type quit to exit\n --> ")
 
-        # We can change these if statements with more concrete commands/aliases
-        if "login" in prompt:
+        if "login" in prompt.lower():
 
             email = input("Please enter your email: ")
             password = input("Please enter your password: ")
@@ -36,14 +35,13 @@ def main():
             s.set_current_user(user)
 
             s.run()
-        elif "sign up" in prompt:
+        elif "sign up" in prompt.lower():
 
              # Continuous prompt to help the user sign up
             case = 0
             first_name, last_name, email, password = "", "", "", ""
             telephone, balance = 0, 0
 
-            # My version of a python switch statement
             while True:
 
                 try:
@@ -71,7 +69,6 @@ def main():
                         if not valid_email(email):
                             raise ValueError
 
-                        # TODO Suggestion for making it restart from login???
                         if s.client_exists(email):
                             print("You already have an account. Please restart and login!")
                             quit()
@@ -89,10 +86,12 @@ def main():
                         continue
 
                     if case == 4:
-                        telephone = int(input("Please enter your telephone number (must be 11 digits): "))
+                        telephone = input("Please enter your telephone number (must be 10 digits): ")
 
-                        if len(str(telephone)) != 10:
+                        if len(telephone) != 10:
                             raise ValueError
+
+                        temp = int(telephone)
 
                         case = 5
                         continue
@@ -117,7 +116,7 @@ def main():
 
             s.run()
 
-        elif "quit" in prompt:
+        elif "quit" in prompt.lower():
             break
 
         else:
