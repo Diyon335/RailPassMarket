@@ -21,7 +21,7 @@ def main():
 
         prompt = input("Welcome! Would you like to login or sign up? Type quit to exit\n --> ")
 
-        if "login" in prompt:
+        if "login" in prompt.lower():
 
             email = input("Please enter your email: ")
             password = input("Please enter your password: ")
@@ -35,7 +35,7 @@ def main():
             s.set_current_user(user)
 
             s.run()
-        elif "sign up" in prompt:
+        elif "sign up" in prompt.lower():
 
              # Continuous prompt to help the user sign up
             case = 0
@@ -86,7 +86,7 @@ def main():
                         continue
 
                     if case == 4:
-                        telephone = int(input("Please enter your telephone number (must be 11 digits): "))
+                        telephone = int(input("Please enter your telephone number (must be 10 digits): "))
 
                         if len(str(telephone)) != 10:
                             raise ValueError
@@ -114,7 +114,7 @@ def main():
 
             s.run()
 
-        elif "quit" in prompt:
+        elif "quit" in prompt.lower():
             break
 
         else:

@@ -118,10 +118,10 @@ class RailPassSystem:
         # Once called, the user has various options while this loop is running - such as uploading a ticket for sale, etc
         while True:
             prompt = input(
-                "\nSelect an option:\nBuy\nView my railpasses\nView balance\nRegister a railpass\nDelete a railpass\nLogout\n --> ")
+                "\nSelect an option:\nBuy a railpass\nView my railpasses\nView balance\nRegister a railpass\nDelete a railpass\nLogout\n --> ")
 
 
-            if "buy" in prompt:
+            if "buy" in prompt.lower():
 
                 case = 0
                 travel_date = ""
@@ -166,7 +166,7 @@ class RailPassSystem:
                         if case == 2:
                             rail_pass_id = input("Please enter the rail pass id you want to buy. Type quit to cancel:")
 
-                            if "quit" in rail_pass_id:
+                            if "quit" in rail_pass_id.lower():
                                 print("Cancelled buying")
                                 break
                             else:
@@ -214,12 +214,12 @@ class RailPassSystem:
                         continue
                 continue
 
-            elif "railpasses" in prompt:
+            elif "view" or "railpasses" in prompt.lower():
                 print("Your rail passes:")
                 for rail_pass in self._client.get_rail_passes():
                     print(rail_pass.get_display_string())
 
-            elif "balance" in prompt:
+            elif "balance" in prompt.lower():
                 print("Your balance:")
                 print(self._client.get_bank_balance())
 
@@ -287,7 +287,7 @@ class RailPassSystem:
                 user.add_rail_pass(rp)
                 continue
 
-            elif "delete" in prompt:
+            elif "delete" in prompt.lower():
 
                 print("Your rail passes:")
 
@@ -300,7 +300,7 @@ class RailPassSystem:
 
                         id_to_delete = input("Please enter the rail pass id you want to delete. Type quit to cancel:")
 
-                        if "quit" in id_to_delete:
+                        if "quit" in id_to_delete.lower():
                             print("Cancelled deleting any tickets")
                             break
                         else:
@@ -323,7 +323,7 @@ class RailPassSystem:
                         print("Please check your entered data and try again!")
                     continue
 
-            elif "logout" in prompt:
+            elif "logout" in prompt.lower():
                 self.close()
                 break
 
