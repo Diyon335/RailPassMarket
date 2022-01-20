@@ -18,7 +18,7 @@ class Person:
             self._email_address = email_address
             self._password = password
             self._telephone = telephone
-            self._bank_balance = int(bank_balance)
+            self._bank_balance = float(bank_balance)
             self._rail_passes = []  # list of rail passes owned by person
 
         except TypeError as e:
@@ -49,6 +49,12 @@ class Person:
     """
     def get_first_name(self):
         return self._first_name
+
+    """
+    Gets balance of client
+    """
+    def get_bank_balance(self):
+        return '%.2f'%self._bank_balance
 
     """
     Adds a single rail pass for the person
@@ -92,6 +98,7 @@ class Person:
 
     def sell_rail_pass(self, rail_pass):
         # we will return only items with ids that are not equal to the input ticket id
+        self.deposit_money(rail_pass.get_cost())
         new_rail_passes = [rp for rp in self._rail_passes if rp.get_id() != rail_pass.get_id()]
         self._rail_passes = list(new_rail_passes)  # deep copy of the list
 
@@ -119,7 +126,7 @@ class Person:
     def load_rail_passes(self, rail_pass_list):
         for rp in rail_pass_list:
             string = rp.split(":")
-            self._rail_passes.append(RailPass(string[0], string[1], string[2], string[3], string[4], string[5]))
+            self._rail_passes.append(RailPass(string[1], string[2], string[3], string[4], string[5]))
 
     """
     The default toString method of the Person object

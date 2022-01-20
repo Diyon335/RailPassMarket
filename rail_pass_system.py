@@ -3,6 +3,7 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 from Classes.rail_pass import RailPass
 from Classes.person import Person
+from Classes.helpers import RailPassLevel
 
 
 """
@@ -115,10 +116,9 @@ class RailPassSystem:
 
     def run(self):
         # Once called, the user has various options while this loop is running - such as uploading a ticket for sale, etc
-        # TODO Implement various prompts (sell tickets, search and buy for tickets)
         while True:
             prompt = input(
-                "\nSelect an option:\nBuy\nSell\nView my tickets\nRegister a railpass\nDelete a ticket\nLogout\n --> ")
+                "\nSelect an option:\nBuy\nView my railpasses\nView balance\nRegister a railpass\nDelete a ticket\nLogout\n --> ")
 
             if "sell" in prompt:
                 pass  # Not implemented yet
@@ -130,7 +130,7 @@ class RailPassSystem:
 
                 while True:
 
-                    try:
+                   try:
                         if case == 0:
 
                             travel_date = input("Please enter your desired date of travel (dd/mm/yyyy):")
@@ -152,7 +152,7 @@ class RailPassSystem:
                                 else:
                                     print("No Rail Passes found as per your conditions.")
                                     case = 0
-                                    continue
+                                    break
 
                             case = 2  # now next step is to buy a certain ticket from the displayed ones
                             continue
@@ -195,19 +195,24 @@ class RailPassSystem:
                                     print("This ticket is not found in our database.")
                                     break
 
-                    except (ValueError, TypeError):
+                   except (ValueError, TypeError):
                         print("Please check your entered data and try again!")
                         continue
                 continue
 
-            elif "view" in prompt:
+            elif "railpasses" in prompt:
                 print("Your rail passes:")
-                print(self._client.get_rail_passes())
+                for rail_pass in self._client.get_rail_passes():
+                    print(rail_pass)
+
+            elif "balance" in prompt:
+                print("Your balance:")
+                print(self._client.get_bank_balance())
 
             elif "register" in prompt.lower():
 
                 case = 0
-                price = 100
+                price = 0
                 rail_pass_level = ""
                 rides_left = ""
                 rail_pass_id = ""
@@ -265,7 +270,7 @@ class RailPassSystem:
                 print(f"Your railpass with id {rail_pass_id} is registered!")
                 user = self.get_current_user()
                 owner_id = user.get_person_id()
-                rp = RailPass(price, rail_pass_level, rides_left, rail_pass_id, owner_id, issue_date)
+                rp = RailPass(RailPassLevel(rail_pass_level).name, rides_left, rail_pass_id, owner_id, issue_date)
                 self.add_rail_pass(rp)
                 user.add_rail_pass(rp)
                 continue
