@@ -91,6 +91,8 @@ def main():
                         if len(telephone) != 10:
                             raise ValueError
 
+                        temp = int(telephone)
+
                         case = 5
                         continue
 
