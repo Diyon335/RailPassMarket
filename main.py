@@ -19,9 +19,8 @@ def main():
 
         s = RailPassSystem()
 
-        prompt = input("Welcome! Would you like to login or sign up?\n --> ")
+        prompt = input("Welcome! Would you like to login or sign up? Type quit to exit\n --> ")
 
-        # We can change these if statements with more concrete commands/aliases
         if "login" in prompt:
 
             email = input("Please enter your email: ")
@@ -43,7 +42,6 @@ def main():
             first_name, last_name, email, password = "", "", "", ""
             telephone, balance = 0, 0
 
-            # My version of a python switch statement
             while True:
 
                 try:
@@ -71,7 +69,6 @@ def main():
                         if not valid_email(email):
                             raise ValueError
 
-                        # TODO Suggestion for making it restart from login???
                         if s.client_exists(email):
                             print("You already have an account. Please restart and login!")
                             quit()

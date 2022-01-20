@@ -118,15 +118,13 @@ class RailPassSystem:
         # Once called, the user has various options while this loop is running - such as uploading a ticket for sale, etc
         while True:
             prompt = input(
-                "\nSelect an option:\nBuy\nView my railpasses\nView balance\nRegister a railpass\nDelete a ticket\nLogout\n --> ")
+                "\nSelect an option:\nBuy\nView my railpasses\nView balance\nRegister a railpass\nDelete a railpass\nLogout\n --> ")
 
-            if "sell" in prompt:
-                pass  # Not implemented yet
-            elif "buy" in prompt:
+
+            if "buy" in prompt:
 
                 case = 0
                 travel_date = ""
-                number_of_passengers = ""
 
                 while True:
 
@@ -142,49 +140,65 @@ class RailPassSystem:
                             case = 1
 
                         if case == 1:
+
                             number_of_passengers = int(input("Please enter the number of required rides:"))
+
                             if len(self._rail_passes) < 1:
                                 print("No Rail Passes left!")
+
                             else:
+
                                 rail_passes_found = self.filter_rail_passes(travel_date, number_of_passengers)
+
                                 if len(rail_passes_found) >= 1:
-                                    print(*rail_passes_found, sep="\n")
+
+                                    for t in rail_passes_found:
+                                        print(t.get_display_string())
+
                                 else:
                                     print("No Rail Passes found as per your conditions.")
                                     case = 0
                                     break
 
-                            case = 2  # now next step is to buy a certain ticket from the displayed ones
+                            case = 2
                             continue
 
-                        if case == 2:  # this case to ask the user to buy a ticket
-                            rail_pass_id = int(input("Please enter the rail pass id you want to buy:"))
-                            # check if that ticket already belongs to the user who is currently logged in
+                        if case == 2:
+                            rail_pass_id = input("Please enter the rail pass id you want to buy. Type quit to cancel:")
+
+                            if "quit" in rail_pass_id:
+                                print("Cancelled buying")
+                                break
+                            else:
+                                rail_pass_id = int(rail_pass_id)
+
+                            # Check if that ticket already belongs to the user who is currently logged in
                             new_rail_passes = list([rp for rp in self.get_current_user().get_rail_passes() if
                                                     rp.get_id() == rail_pass_id])
-                            if len(new_rail_passes) != 0:  # he has already this ticket in his list
+
+                            if len(new_rail_passes) != 0:  # He has already this ticket in his list
                                 print("You can not buy this ticket as you have it already.")
                                 continue
+
                             else:
-                                # this means this rail pass can be added now find the details from the list
-                                # of tickets # tickets now are loaded with its db file
+
                                 rail_pass_to_add = list([rp for rp in self.get_rail_passes() if
                                                          rp.get_id() == rail_pass_id])
-                                if len(rail_pass_to_add) != 0:  # we found the ticket
-                                    # check its price and if the user has enough balance
+
+                                if len(rail_pass_to_add) != 0:
+                                    # Check its price and if the user has enough balance
                                     rp_to_check = rail_pass_to_add[0]
+
                                     if self.get_current_user().can_buy(rp_to_check):
-                                        # ticket is appended and money deducted
+
                                         self.get_current_user().buy_rail_pass(rp_to_check)
-                                        # ticket need to be popped from the seller
-                                        # get the owner object and pop the ticket out
+
+                                        # Remove from owner's list of rail passes
                                         owner = list(
-                                            filter(lambda
-                                                       owner_obj: owner_obj.get_person_id() == rp_to_check.get_owner_id(),
-                                                   self.get_clients()))[0]
+                                            filter(lambda owner_obj: owner_obj.get_person_id() == rp_to_check.get_owner_id(), self.get_clients()))[0]
+
                                         owner.sell_rail_pass(rp_to_check)
-                                        rp_to_check.set_owner_id(
-                                            self.get_current_user().get_person_id())  # Updating user_id on ticket record
+                                        rp_to_check.set_owner_id(self.get_current_user().get_person_id())
                                         print("The ticket is added to your account successfully.")
                                         break
 
@@ -203,7 +217,7 @@ class RailPassSystem:
             elif "railpasses" in prompt:
                 print("Your rail passes:")
                 for rail_pass in self._client.get_rail_passes():
-                    print(rail_pass)
+                    print(rail_pass.get_display_string())
 
             elif "balance" in prompt:
                 print("Your balance:")
@@ -212,11 +226,9 @@ class RailPassSystem:
             elif "register" in prompt.lower():
 
                 case = 0
-                price = 0
                 rail_pass_level = ""
                 rides_left = ""
                 rail_pass_id = ""
-                owner_id = ""
                 issue_date = ""
 
                 while True:
@@ -278,19 +290,38 @@ class RailPassSystem:
             elif "delete" in prompt:
 
                 print("Your rail passes:")
-                print(self._client.get_rail_passes())
 
-                try:
-                    id_to_delete = int(input("Please enter the rail pass id you want to delete:"))
-                    self._client.delete_rail_pass(id_to_delete)
-                    # Delete also these rail passes from the main list of tickets #db
-                    new_rail_passes = [rp for rp in self._rail_passes if rp.get_id() != id_to_delete]
-                    self._rail_passes = list(new_rail_passes)
-                    print(f"Rail pass with id {id_to_delete} has been deleted")
+                for p in self._client.get_rail_passes():
+                    print(p.get_display_string())
 
-                except (ValueError, TypeError):
-                    print("Please check your entered data and try again!")
-                continue
+                while True:
+
+                    try:
+
+                        id_to_delete = input("Please enter the rail pass id you want to delete. Type quit to cancel:")
+
+                        if "quit" in id_to_delete:
+                            print("Cancelled deleting any tickets")
+                            break
+                        else:
+                            id_to_delete = int(id_to_delete)
+
+                        ids = [rp.get_id() for rp in self._rail_passes]
+
+                        if id_to_delete not in ids:
+                            print("Invalid ID. Check and try again")
+                            continue
+
+                        self._client.delete_rail_pass(id_to_delete)
+
+                        # Delete tickets from database
+                        new_rail_passes = [rp for rp in self._rail_passes if rp.get_id() != id_to_delete]
+                        self._rail_passes = list(new_rail_passes)
+                        print(f"Rail pass with id {id_to_delete} has been deleted")
+
+                    except (ValueError, TypeError):
+                        print("Please check your entered data and try again!")
+                    continue
 
             elif "logout" in prompt:
                 self.close()

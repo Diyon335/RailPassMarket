@@ -83,6 +83,19 @@ class RailPass:
         return self._rides_left
 
     """
+    Returns a string that represents the data in the railpass. This string will be used in the user interface
+    """
+
+    def get_display_string(self):
+        return f"--------------------------\n" \
+               f"{self._rail_pass_level} STIB-MIVB\n" \
+               f"ID: {self._rail_pass_id}\n" \
+               f"Price: {self._price:.2f} euros\n" \
+               f"Rides Left: {self._rides_left}\n" \
+               f"This RailPass was issued on: {self._issue_date.strftime('%d/%m/%Y')}\n" \
+               f"--------------------------\n"
+
+    """
     Default toString method of the class
     """
 
