@@ -86,9 +86,9 @@ def main():
                         continue
 
                     if case == 4:
-                        telephone = int(input("Please enter your telephone number (must be 10 digits): "))
+                        telephone = input("Please enter your telephone number (must be 10 digits): ")
 
-                        if len(str(telephone)) != 10:
+                        if len(telephone) != 10:
                             raise ValueError
 
                         case = 5
