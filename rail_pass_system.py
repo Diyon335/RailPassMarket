@@ -199,6 +199,7 @@ class RailPassSystem:
 
                                         owner.sell_rail_pass(rp_to_check)
                                         rp_to_check.set_owner_id(self.get_current_user().get_person_id())
+                                        owner.deposit_money(rp_to_check.get_cost())
                                         print("The ticket is added to your account successfully.")
                                         break
 
@@ -214,12 +215,12 @@ class RailPassSystem:
                         continue
                 continue
 
-            elif "view" or "railpasses" in prompt.lower():
+            elif "view" and "railpasses" in prompt.lower():
                 print("Your rail passes:")
                 for rail_pass in self._client.get_rail_passes():
                     print(rail_pass.get_display_string())
 
-            elif "balance" in prompt.lower():
+            elif "view" and "balance" in prompt.lower():
                 print("Your balance:")
                 print(self._client.get_bank_balance())
 
